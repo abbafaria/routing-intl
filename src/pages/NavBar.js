@@ -6,11 +6,20 @@ import { LanguageSwitcher } from "../components/LanguageSwitcher";
 export const NavBar = () => {
   return (
     <>
-      <ul>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: 10,
+        }}
+      >
         <Link to={"blog/about"}>
           <FormattedMessage id="about.title" />{" "}
         </Link>
-      </ul>
+        <Link to={"blog"}>
+          <FormattedMessage id="blog.nav" />{" "}
+        </Link>
+      </div>
       <LanguageSwitcher />
     </>
   );

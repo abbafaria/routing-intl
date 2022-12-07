@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   langID: "am",
+  businessType: 'individual'
 };
 export const language = createSlice({
   name: "language",
@@ -10,8 +11,11 @@ export const language = createSlice({
     languageRefresh: (state, action) => {
       state.langID = action.payload;
     },
+    businessTypeRefresh: (state, action) => {
+      state.businessType = action.payload;
+    },
   },
 });
 
-export const { languageRefresh } = language.actions;
+export const { languageRefresh, businessTypeRefresh } = language.actions;
 export default language.reducer;

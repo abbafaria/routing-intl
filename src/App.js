@@ -3,17 +3,18 @@ import "./App.css";
 import { useDispatch, useSelector } from "react-redux";
 import language, { languageRefresh } from "./redux/language";
 import { NavBar } from "./pages/NavBar";
-import { Outlet, useLocation, useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { createBrowserRouter, Outlet, RouterProvider, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { IntlProvider } from "react-intl";
 import en from "./translations/locale/en.json";
 import ru from "./translations/locale/ru.json";
 import am from "./translations/locale/am.json";
+import { defaultRoutes, router } from "./routing/routes";
 
 function App() {
-  const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const { langID } = useParams();
+  // const navigate = useNavigate();
+  // const { pathname } = useLocation();
+  // const { langID, businessType } = useParams();
   const lang = useSelector((state) => state.language.langID);
 
   const messages = {
@@ -22,19 +23,50 @@ function App() {
     am: am,
   };
 
-  // useEffect(() => {
-  //   if (!(langID === "am" || langID === "en" || langID === "ru")) {
-  //     console.log(langID, "langID");
-  //     navigate("/" + lang);
-  //   }
-  // }, []);
 
   const { language, languages } = navigator;
+  const { routes } = useSelector(state => state.routes)
+  const { langID, businessType } = useSelector(state => state.language)
+
+  // console.log(langID, 'langID');
+  // console.log(businessType, 'businessType')
+
+  const [ temp , setTemp ] = useState(defaultRoutes)
+
+
+
+
+  useEffect(() => {
+    const temp = defaultRoutes.map(item => {
+      const tempRoute = {
+        path: item.path,
+        element: item.component
+      }
+  
+      if(langID !== 'am') {
+          tempRoute.path += ':langID'
+      }
+
+      if(businessType !== 'individual') {
+        tempRoute.path += ':businessType'
+      }
+      return tempRoute;
+    })
+
+    console.log(temp,'temp');
+    // setTemp(temp)
+
+  }, [langID, businessType])
+
+ 
+  const r = createBrowserRouter(defaultRoutes)
+  console.log(r, 'routes');
   return (
     <div className="App">
-      <IntlProvider locale={langID || "am"} messages={messages[langID || "am"]}>
-        <NavBar />
-        <Outlet />
+      <IntlProvider locale={ "am"} messages={messages[lang]}>
+        {/* <NavBar /> */}
+        <RouterProvider router={r} />
+
       </IntlProvider>
     </div>
   );

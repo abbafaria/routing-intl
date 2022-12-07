@@ -8,31 +8,55 @@ export const LanguageSwitcher = () => {
   const navigate = useNavigate();
   const { langID } = useParams();
 
+
   const onChange = (e) => {
     const lang = e.target.value;
     dispatch(languageRefresh(lang));
-    let replacer = "/" + lang;
-    let url = "";
 
-    if (lang === "am") {
-      replacer = "";
-      url = pathname.replace("/" + langID, replacer);
-    } else {
-      if (langID) {
-        replacer = "/" + lang;
-        url = pathname.replace("/" + langID, replacer);
+    // let replacer = '/' + lang
+
+    let url = ''
+
+    if(lang === 'am') {
+      if(langID) {
+        url = pathname.replace('/'+langID, '')
       } else {
-        replacer = "/" + lang + "/";
-        url = pathname.replace("/", replacer);
+        console.log('petq chi');
+        // url = pathname.replace('/', lang)
+      }
+    } else {
+      if(langID) {
+        url = pathname.replace(langID, lang)
+      } else {
+        url = pathname.replace('/', lang + '/')
       }
     }
-    navigate(url);
+
+
+  
+    navigate(url)
+    // let replacer = "/" + lang;
+    // let url = "";
+
+    // if (lang === "am") {
+    //   replacer = "";
+    //   url = pathname.replace("/" + langID, replacer);
+    // } else {
+    //   if (langID) {
+    //     replacer = "/" + lang;
+    //     url = pathname.replace("/" + langID, replacer);
+    //   } else {
+    //     replacer = "/" + lang + "/";
+    //     url = pathname.replace("/", replacer);
+    //   }
+    // }
+    // navigate(url);
   };
   return (
     <select defaultValue={langID || "am"} onChange={onChange}>
-      <option value="am"> Arm</option>
-      <option value="ru"> Ru</option>
-      <option value="en"> En</option>
+      <option value="am"> Armenian</option>
+      <option value="ru"> Russian </option>
+      <option value="en"> English </option>
     </select>
   );
 };
